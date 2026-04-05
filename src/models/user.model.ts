@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 
-interface Phone { type: string; number: string; }
+interface IPhone { type: string; number: string; }
 
 export interface IUser extends Document {
   username: string;
@@ -11,11 +11,11 @@ export interface IUser extends Document {
   address?: {
     area?: string; street?: string; number?: string; po?: string; municipality?: string;
   };
-  phone?: Phone[];
+  phone?: IPhone[];
   roles: Types.ObjectId[];
 }
 
-const PhoneSchema = new Schema<Phone>({ type: String, number: String }, { _id: false });
+const PhoneSchema = new Schema<IPhone>({ type: String, number: String }, { _id: false });
 
 const UserSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
@@ -24,7 +24,11 @@ const UserSchema = new Schema<IUser>({
   lastname: String,
   email: { type: String, index: true },
   address: {
-    area: String, street: String, number: String, po: String, municipality: String
+    area: String, 
+    street: String, 
+    number: String, 
+    po: String, 
+    municipality: String
   },
   phone: [PhoneSchema],
   roles: [{ type: Schema.Types.ObjectId, ref: "Role", required: true }]
@@ -35,8 +39,6 @@ const UserSchema = new Schema<IUser>({
 });
 
 export default model<IUser>("User", UserSchema);
-
-
 
 // let userSchema = new Schema({
 //   username: {

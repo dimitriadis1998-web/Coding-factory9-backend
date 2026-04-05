@@ -27,6 +27,6 @@ start();
 // Useful if you’re changing files that are not automatically reloaded (like .env or JSON configs).
 // 3. --transpile-only
 // This flag tells TypeScript to skip type checking when compiling.
-// ✅ Pros: Faster reload times.
-// ⚠️ Cons: Type errors (e.g. wrong variable types) won’t stop the server from running.
+// Pros: Faster reload times.
+// Cons: Type errors (e.g. wrong variable types) won’t stop the server from running.
 // This is fine for development but not for production — in production you’d usually compile with tsc first.

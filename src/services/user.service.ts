@@ -1,7 +1,9 @@
 import User, { IUser } from '../models/user.model';
 import Role, { IRole } from '../models/role.model';
+import * as userDAO from '../dao/user.dao';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { toUserResponseDTO } from '../mappers/user.mappers';
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10', 10);
 
@@ -41,8 +43,13 @@ export const createUser = async (payload: Partial<IUser>) => {
     roleIds = [reader._id];
   }
 
-  const user = new User({ ...payload, roles: roleIds });
-  return user.save();
+  // const user = new User({ ...payload, roles: roleIds });
+  const user = await userDAO.createUser({
+    ...payload,
+    roles: roleIds
+  });
+  // return toUserResponseDTO(await user.save());
+  return toUserResponseDTO(user);
 };
 
 export const updateUser = async (username: string, payload: Partial<IUser>) => {

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as userService from '../services/user.service';
+import { IUser } from '../models/user.model';
+import { UserResponseDTO } from '../dto/user.dto';
 
 export const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,7 +37,8 @@ export const getOneByEmail = async (req: Request, res: Response, next: NextFunct
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userService.createUser(req.body);
+    const data: IUser = req.body;
+    const user: UserResponseDTO = await userService.createUser(data);
     res.status(201).json(user);
   } catch (err) { next(err); }
 };
