@@ -42,7 +42,8 @@ router.get('/', authenticate, userCtrl.list);
 *       404:
 *         description: Ο χρήστης δεν βρέθηκε
 */
-router.get('/:id', authenticate, hasAdminRole, validateObjectId('id'), userCtrl.getOne);
+router.get('/:id', validateObjectId('id'), userCtrl.getOneById);
+// router.get('/:id', authenticate, hasAdminRole, validateObjectId('id'), userCtrl.getOneById);
 
 /**
 * @openapi
@@ -64,7 +65,8 @@ router.get('/:id', authenticate, hasAdminRole, validateObjectId('id'), userCtrl.
 *       404:
 *         description: Ο χρήστης δεν βρέθηκε
 */
-router.get('/email/:email', authenticate, hasAdminRole, userCtrl.getOneByEmail);
+router.get('/email/:email', userCtrl.getOneByEmail);
+// router.get('/email/:email', authenticate, hasAdminRole, userCtrl.getOneByEmail);
 
 /**
 * @openapi
@@ -95,8 +97,8 @@ router.get('/email/:email', authenticate, hasAdminRole, userCtrl.getOneByEmail);
 *       201:
 *         description: Ο χρήστης δημιουργήθηκε
 */
-router.post('/', authenticate, hasAdminRole, validate(createUserSchema), userCtrl.create); // public
-
+// router.post('/', authenticate, hasAdminRole, validate(createUserSchema), userCtrl.create); // public
+router.post('/', validate(createUserSchema), userCtrl.create); // public
 /**
 * @openapi
 * /users/{username}:

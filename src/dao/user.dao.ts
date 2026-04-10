@@ -6,9 +6,9 @@ export const createUser = async (data: Partial<IUser>): Promise<IUser> => {
 };
 
 export const findById = async (id: string): Promise<IUser | null> => {
-  return await User.findById(id);
+  return await User.findById(id).populate('roles').lean();
 };
 
-export const findByUsername = async (username: string): Promise<IUser | null> => {
-  return await User.findOne({ username });
+export const findByEmail = async (email: string): Promise<IUser | null> => {
+  return await User.findOne({ email:email }).populate('roles').lean();;
 };

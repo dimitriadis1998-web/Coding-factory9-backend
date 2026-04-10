@@ -3,20 +3,33 @@ import Role, { IRole } from '../models/role.model';
 import * as userDAO from '../dao/user.dao';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { toUserResponseDTO } from '../mappers/user.mappers';
+import { toUserResponseDTO } from '../mappers/user.mapper';
+import { AppError } from '../utils/appError';
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10', 10);
 
+// MongoDB Errors
+// https://www.mongodb.com/docs/manual/reference/error-codes/
+
+// Mongoose
+// Η .lean() είναι μια επιλογή ερωτήματος που επιστρέφει απλά αντικείμενα JavaScript (POJO) αντί για Mongoose Document. Βελτιώνει σημαντικά την απόδοση και μειώνει τη χρήση μνήμης (συχνά έως και 10 φορές πιο γρήγορα) παρακάμπτοντας την παρακολούθηση αλλαγών και την επικύρωση του Mongoose, καθιστώντας την ιδανική για αιτήματα GET μόνο για ανάγνωση.
 export const findUsers = async (filter: any = {}) => {
   return User.find(filter).populate('roles').lean();
 };
 
 export const findUserById = async (id: string) => {
-  return User.findById(id).populate('roles').lean();
+  const user = await userDAO.findById(id);
+  if (user) {
+    return toUserResponseDTO(user); 
+  }
+    
 };
 
 export const findUserByEmail = async (email: string) => {
-  return User.findOne({email:email}).populate('roles').lean();
+  const user = await userDAO.findByEmail(email);
+  if (user) {
+    return toUserResponseDTO(user); 
+  }
 };
 
 export const findUserByUsername = async (username: string) => {
@@ -32,9 +45,9 @@ export const createUser = async (payload: Partial<IUser>) => {
   }
 
   let roleIds: Types.ObjectId[] = [];
-  console.log("Create User", payload);
+  // console.log("Create User", payload);
   if (payload.roles && payload.roles.length > 0) {
-    roleIds = payload.roles as any;
+    roleIds = payload.roles as Types.ObjectId[];
   } else {
     let reader: IRole | null = await Role.findOne({ role: 'READER' });
     if (!reader) {

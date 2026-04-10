@@ -1,58 +1,90 @@
 import { Request, Response, NextFunction } from 'express';
 import * as userService from '../services/user.service';
 import { IUser } from '../models/user.model';
-import { UserResponseDTO } from '../dto/user.dto';
+import { CreateUserDTO, UserResponseDTO } from '../dto/user.dto';
 
 export const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const filter: any = {};
     if (req.query.municipality) filter['address.municipality'] = req.query.municipality;
-    const users = await userService.findUsers(filter);
-    res.json(users);
-  } catch (err) { next(err); }
+    const result = await userService.findUsers(filter);
+    res.json(result);
+  } catch (err) { 
+    // next(err);
+    console.log(err)
+    res.status(401).json(err);  
+  }
 };
 
-export const getOne = async (req: Request, res: Response, next: NextFunction) => {
+export const getOneById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // To είχαμε έτσι και εμφάνιζε μήνυμα για req.params.id γιατί μπορεί να μην υπάρχει
-    // const user = await userService.findUserById(req.params.id);
-    // Δύο λύσεις ή req.params.id! ή
-    // if (!req.params.id) {
-    //   return res.status(400).json({ message: 'Missing user ID' });
-    // }
-    // const user = await userService.findUserById(req.params.id);
-    const user = await userService.findUserById(req.params.id!);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
-  } catch (err) { next(err); }
+    const id: string = req.params.id!;
+    const result = await userService.findUserById(id);
+    if (!result) return res.status(404).json({ message: 'User not found by id' });
+    res.status(201).json(result);
+  } catch (err) { 
+    next(err);
+    console.log(err)
+    res.status(500).json(err); 
+  }
 };
 
 export const getOneByEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userService.findUserByEmail(req.params.email!);
-    if (user) return res.status(200).json(user);
-    res.status(401).json({message:"Not Found"});
-  } catch (err) { next(err); }
+    const email: string = req.params.email!;
+    const result = await userService.findUserByEmail(email);
+    if (!result) return res.status(404).json({ message: 'User not found by email' });
+    res.status(201).json(result);
+  } catch (err) { 
+    // next(err);
+    console.log(err)
+    res.status(500).json(err);  
+  }
 };
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data: IUser = req.body;
-    const user: UserResponseDTO = await userService.createUser(data);
-    res.status(201).json(user);
-  } catch (err) { next(err); }
+    const result = await userService.createUser(data);
+    res.status(201).json(result);
+  } catch (err) { 
+    // next(err);
+    console.log(err)
+    res.status(401).json(err); 
+  }
 };
 
 export const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userService.updateUser(req.params.username!, req.body);
-    res.status(201).json(user);
-  } catch (err) { next(err); }
+    const data: Partial<IUser> = req.body;
+    const username: string = req.params.username!;
+    const result = await userService.updateUser(username, data);
+    res.status(201).json(result);
+  } catch (err) { 
+    // next(err);
+    console.log(err)
+    res.status(401).json(err);  
+  }
 };
 
 export const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const r = await userService.deleteUser(req.params.username!);
-    res.status(201).json({ deleted: !!r });
-  } catch (err) { next(err); }
+    const username: string = req.params.username!;
+    const result = await userService.deleteUser(username);
+    res.status(201).json({ deleted: !!result });
+  } catch (err) { 
+    // next(err);
+    console.log(err)
+    res.status(401).json(err);  
+  }
 };
+// Το !!result είναι μια διπλή άρνηση που μετατρέπει ΟΠΟΙΑΔΗΠΟΤΕ τιμή σε αυστηρή λογική τιμή:
+// !value → μετατρέπει σε λογική τιμή και την αντιστρέφει
+// !!value → την αντιστρέφει δύο φορές → το τελικό αποτέλεσμα είναι αληθές ή ψευδές
+// Αυτό σημαίνει:
+// Εάν η λειτουργία διαγραφής βρήκε και διέγραψε έναν χρήστη → το αποτέλεσμα είναι ένα αντικείμενο → το !!result γίνεται αληθές
+// Εάν η λειτουργία διαγραφής δεν βρήκε έναν χρήστη → το αποτέλεσμα είναι null → το !!result γίνεται ψευδές
+// Παράδειγμα:
+// const result = await User.findByIdAndDelete(id);
+// Εάν υπάρχει χρήστης → επιστρέφει το διαγραμμένο αντικείμενο χρήστη → truthy → !!result === true
+// Εάν ΔΕΝ υπάρχει χρήστης → επιστρέφει null → falsy → !!result === false
