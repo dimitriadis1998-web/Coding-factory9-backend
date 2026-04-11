@@ -8,9 +8,7 @@ export const getAll = async (req: Request, res: Response, next: NextFunction) =>
     const result = await userService.findUsers();
     res.status(200).json(result);
   } catch (err) { 
-    // next(err);
-    console.log(err)
-    res.status(401).json(err);  
+    next(err);
   }
 };
 
@@ -21,9 +19,7 @@ export const getOneById = async (req: Request, res: Response, next: NextFunction
     if (!result) return res.status(404).json({ message: 'User not found by id' });
     res.status(200).json(result);
   } catch (err) { 
-    // next(err);
-    console.log(err)
-    res.status(500).json(err); 
+    next(err);
   }
 };
 
@@ -34,9 +30,7 @@ export const getOneByEmail = async (req: Request, res: Response, next: NextFunct
     if (!result) return res.status(404).json({ message: 'User not found by email' });
     res.status(200).json(result);
   } catch (err) { 
-    // next(err);
-    console.log(err)
-    res.status(500).json(err);  
+    next(err);
   }
 };
 
@@ -74,10 +68,11 @@ export const remove = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const username: string = req.params.username!;
     const result = await userService.deleteUser(username);
+    if (!result) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.status(200).json({ deleted: result });
   } catch (err) { 
-    // next(err);
-    console.log(err)
-    res.status(401).json(err);  
+    next(err);
   }
 };
