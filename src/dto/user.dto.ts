@@ -7,6 +7,7 @@ export interface IPhoneDTO {
 
 export interface CreateUserDTO {
   username: string;
+  password: string;
   firstname?: string;
   lastname?: string;
   email?: string;
@@ -18,7 +19,22 @@ export interface CreateUserDTO {
     municipality?: string;
   };
   phone?: IPhoneDTO[];
-  roles: RoleDTO[];
+  roles?: string[]; 
+}
+export interface UpdateUserDTO {
+  password?: string;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  address?: {
+    area?: string;
+    street?: string;
+    number?: string;
+    po?: string;
+    municipality?: string;
+  };
+  phone?: IPhoneDTO[];
+  roles?: string[]; 
 }
 
 export interface UserResponseDTO {

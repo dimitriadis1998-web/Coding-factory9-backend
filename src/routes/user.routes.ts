@@ -20,7 +20,8 @@ const router = Router();
 *       200:
 *         description: Επιστρέφει array χρηστών
 */
-router.get('/', authenticate, userCtrl.list);
+// router.get('/', authenticate, userCtrl.getAll);
+router.get('/', userCtrl.getAll);
 
 /**
 * @openapi
@@ -133,7 +134,8 @@ router.post('/', validate(createUserSchema), userCtrl.create); // public
 *       200:
 *         description: Ο χρήστης ενημερώθηκε
 */
-router.put('/:username', authenticate, hasAdminRole, validate(updateUserSchema), userCtrl.update);
+// router.put('/:username', authenticate, hasAdminRole, validate(updateUserSchema), userCtrl.update);
+router.put('/:username', validate(updateUserSchema), userCtrl.update);
 
 /**
 * @openapi
@@ -155,6 +157,8 @@ router.put('/:username', authenticate, hasAdminRole, validate(updateUserSchema),
 *       404:
 *         description: Ο χρήστης δεν βρέθηκε
 */
-router.delete('/:username', authenticate, hasAdminRole, userCtrl.remove);
+// router.delete('/:username', authenticate, hasAdminRole, userCtrl.remove);
+router.delete('/:username', userCtrl.remove);
+
 
 export default router;
