@@ -13,8 +13,6 @@ export interface GoogleUserPayload {
 }
 
 export async function verifyGoogleIdToken(idToken: string): Promise<GoogleUserPayload> {
-  console.log(idToken)
-  console.log(GOOGLE_CLIENT_ID)
   const ticket = await client.verifyIdToken({
     idToken,
     audience: GOOGLE_CLIENT_ID,

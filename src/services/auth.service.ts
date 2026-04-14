@@ -31,7 +31,6 @@ export const login = async (username: string, password: string) => {
 
 export const googleLogin = async(idToken:string) =>{
   try {
-    console.log(">>>",idToken)
     if (!idToken) {
       // return res.status(400).json({ error: 'Missing idToken' });
       return {status: false, message:"Missing idToken"};
@@ -43,16 +42,17 @@ export const googleLogin = async(idToken:string) =>{
       return {status: false, message:"Email not verified"};
     }
     
-    let user = await User.findOne({ userId: googleUser.sub });
+    let user = await User.findOne({ email: googleUser.email });
     if (!user) {
-      user = new User({
-        userId: googleUser.sub,
-        email: googleUser.email,
-        name: googleUser.name,
-        photoUrl: googleUser.picture,
-        roles: ['user'] // default role
-      });
-      await user.save();
+      // user = new User({
+      //   username: googleUser.email,
+      //   email: googleUser.email,
+      //   name: googleUser.name,
+      //   photoUrl: googleUser.picture,
+      //   roles: ['user'] // default role
+      // });
+      // await user.save();
+      console.log("User not exist", googleUser.email)
     } 
     
     const token = jwt.sign(
@@ -61,7 +61,7 @@ export const googleLogin = async(idToken:string) =>{
         email: googleUser.email,
         name: googleUser.name,
         photoUrl: googleUser.picture,
-        roles: user.roles
+        roles: ['reader']
       },
       process.env.JWT_SECRET as string,
       { expiresIn: '1h' }
