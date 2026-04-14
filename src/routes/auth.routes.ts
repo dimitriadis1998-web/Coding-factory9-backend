@@ -74,4 +74,21 @@ router.post('/login', validate(loginSchema), authCtrl.login);
 */
 router.get('/me', authenticate, authCtrl.me); // will be protected at app-level or use authenticate if desired
 
+
+/**
+* @openapi
+* /auth/google:
+*   post:
+*     summary: Επιστρέφει jwt με google authentiacation
+*     tags: [Auth]
+*     security:
+*       - bearerAuth: []
+*     responses:
+*       200:
+*         description: Ο authenticated χρήστης
+*       401:
+*         description: Δεν υπάρχει έγκυρο token
+*/
+router.post('/google-auth', authCtrl.googleLogin); 
+
 export default router;
