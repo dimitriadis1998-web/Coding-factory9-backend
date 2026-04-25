@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+
 export interface AuthPayload {
   username: string;  // user ID
   email: string;    // user email

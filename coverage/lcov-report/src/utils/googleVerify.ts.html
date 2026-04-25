@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/validators/user.validator.ts</title>
+    <title>Code coverage report for src/utils/googleVerify.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/validators</a> user.validator.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utils</a> googleVerify.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>4/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>4/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,20 +90,11 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -115,35 +106,50 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { z } from 'zod';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { OAuth2Client } from 'google-auth-library';
 &nbsp;
-export const phoneSchema = z.object({
-  type: z.string(),
-  number: z.string()
-});
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
 &nbsp;
-export const addressSchema = z.object({
-  area: z.string().optional(),
-  street: z.string().optional(),
-  number: z.string().optional(),
-  po: z.string().optional(),
-  municipality: z.string().optional()
-});
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 &nbsp;
-export const createUserSchema = z.object({
-  username: z.string().min(3),
-  password: z.string().min(6),
-  firstname: z.string().optional(),
-  lastname: z.string().optional(),
-  email: z.string().email().optional(),
-  address: addressSchema.optional(),
-  phone: z.array(phoneSchema).optional(),
-  roles: z.array(z.string()).optional() // array of role IDs (strings)
-});
+export interface GoogleUserPayload {
+  sub: string;
+  email?: string;
+  email_verified?: boolean;
+  name?: string;
+  picture?: string;
+}
 &nbsp;
-export const updateUserSchema = createUserSchema.partial();
+export async function <span class="fstat-no" title="function not covered" >verifyGoogleIdToken(</span>idToken: string): Promise&lt;GoogleUserPayload&gt; {
+  const ticket = <span class="cstat-no" title="statement not covered" >await client.verifyIdToken({</span>
+    idToken,
+    audience: GOOGLE_CLIENT_ID,
+  });
+&nbsp;
+  const payload = <span class="cstat-no" title="statement not covered" >ticket.getPayload();</span>
+  
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!payload) {</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error('No payload in Google token');</span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return payload as GoogleUserPayload;</span>
+}
+&nbsp;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
