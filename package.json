@@ -6,12 +6,12 @@
     "node": ">=22.0.0",
     "npm": ">=10.9.3"
   },
-  "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "test": "jest --runInBand --detectOpenHandles",
-    "seed": "ts-node-dev src/seed/seed.ts"
+ "scripts": {
+  "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+  "build": "tsc",
+  "start": "node dist/server.js"
+  
+
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

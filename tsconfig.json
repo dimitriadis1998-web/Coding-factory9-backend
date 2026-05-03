@@ -3,34 +3,17 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "module": "NodeNext",
-    "target": "ES2020",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
 
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "target": "esnext",
 
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-
-    "verbatimModuleSyntax": false,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-
+    "esModuleInterop": true,
     "skipLibCheck": true,
 
-    "types": ["jest"]
+    "strict": true
   },
 
-  "include": [
-    "src/**/*"
-  ],
-
-  "exclude": [
-    "src/tests",
-    "node_modules",
-    "**/*.test.ts"
-  ]
+  "include": ["src"],
+  "exclude": ["src/tests", "node_modules"]
 }
