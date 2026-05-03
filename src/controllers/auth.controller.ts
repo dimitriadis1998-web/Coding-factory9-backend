@@ -13,7 +13,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const created = await userService.createUser(req.body);
 
     return res.status(201).json({
-      id: (created as any)._id,
+      _id: (created as any)._id,
       username: created.username,
       email: created.email
     });
@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     return res.json({
       token: result.token,
       user: {
-        id: (result.user as any)._id,
+        _id: (result.user as any)._id,
         username: result.user.username
       }
     });
