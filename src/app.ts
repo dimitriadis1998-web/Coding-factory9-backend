@@ -15,27 +15,32 @@ dotenv.config();
 
 const app = express();
 
-// Swagger
+// Swagger (ΠΡΕΠΕΙ να είναι πάνω από routes ή OK εδώ)
 setupSwagger(app);
 
 // Middlewares
 app.use(morgan('dev'));
-app.use(cors());
-app.use(express.json());
-
-// CORS config (κρατάμε μόνο ένα)
 app.use(cors({
-  origin: ['http://localhost:4200']
+  origin: '*'
 }));
+app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 
-// 👇 ΑΥΤΟ ΕΙΝΑΙ ΤΟ ΣΗΜΕΙΟ ΠΟΥ ΣΟΥ ΕΛΕΙΠΕ
+// Root test route
 app.get('/', (req, res) => {
-  res.status(200).send('OK');
+  res.json({
+    status: 'API running',
+    endpoints: {
+      auth: '/api/auth',
+      users: '/api/users',
+      roles: '/api/roles',
+      docs: '/docs'
+    }
+  });
 });
 
 // Error handling
