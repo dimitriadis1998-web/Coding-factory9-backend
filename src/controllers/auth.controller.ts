@@ -13,7 +13,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const created = await userService.createUser(req.body);
 
     return res.status(201).json({
-      id: created._id,
+      id: (created as any)._id,
       username: created.username,
       email: created.email
     });
@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     return res.json({
       token: result.token,
       user: {
-        id: result.user._id,
+        id: (result.user as any)._id,
         username: result.user.username
       }
     });
@@ -68,19 +68,9 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-// 🔥 ME (ΑΥΤΟ ΕΛΕΙΠΕ)
+// ME
 export const me = async (req: Request, res: Response) => {
-  try {
-    const user = (req as any).user;
-
-    if (!user) {
-      return res.status(401).json({ message: 'Not authenticated' });
-    }
-
-    return res.json({
-      user
-    });
-  } catch (err) {
-    return res.status(500).json({ message: 'Server error' });
-  }
+  return res.json({
+    user: (req as any).user
+  });
 };

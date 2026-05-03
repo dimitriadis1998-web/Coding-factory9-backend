@@ -38,7 +38,7 @@ export interface UpdateUserDTO {
 }
 
 export interface UserResponseDTO {
-  id: string;
+  _id: string;
   username: string;
   firstname?: string;
   lastname?: string;
