@@ -6,14 +6,12 @@ import * as userService from '../services/user.service';
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const existing = await userService.findUserByUsername(req.body.username);
-    if (existing) {
-      return res.status(400).json({ message: 'User exists' });
-    }
+    if (existing) return res.status(400).json({ message: 'User exists' });
 
     const created = await userService.createUser(req.body);
 
-    return res.status(201).json({
-      _id: (created as any)._id,
+    res.status(201).json({
+      id: created._id,
       username: created.username,
       email: created.email
     });
@@ -33,10 +31,10 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    return res.json({
+    res.json({
       token: result.token,
       user: {
-        _id: (result.user as any)._id,
+        id: result.user._id,
         username: result.user.username
       }
     });
@@ -59,7 +57,7 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
       });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       status: true,
       token: result.token
     });
@@ -70,7 +68,7 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
 
 // ME
 export const me = async (req: Request, res: Response) => {
-  return res.json({
+  res.json({
     user: (req as any).user
   });
 };
